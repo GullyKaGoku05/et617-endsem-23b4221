@@ -10,7 +10,7 @@
 
   <!-- ============================================================
        TOP BAR — visible on EVERY screen
-       Shows: logo, identity token, session timer, progress
+       Shows: logo, identity token, session timer
        ============================================================ -->
   <header class="topbar">
     <div class="brand">
@@ -36,7 +36,7 @@
     </div>
   </header>
 
-  <!-- Progress bar — visible on EVERY screen -->
+  <!-- Progress bar + step dots — visible on EVERY screen -->
   <div class="progress-wrap">
     <div class="progress-info">
       <span id="progress-label">Step 1 of 7 · Welcome</span>
@@ -45,6 +45,9 @@
     <div class="progress-track">
       <div class="progress-fill" id="progress-fill"></div>
     </div>
+    <ol class="step-dots" id="step-dots">
+      <!-- Filled in by script.js -->
+    </ol>
   </div>
 
   <main class="container">
@@ -54,7 +57,6 @@
          ============================================================ -->
     <section class="screen active" id="screen-welcome">
 
-      <!-- Hero / welcome message -->
       <div class="hero card">
         <div class="hero-text">
           <span class="pill">Class 11 · Physics · Virtual Lab</span>
@@ -72,7 +74,6 @@
             Start Experiment →
           </button>
         </div>
-        <!-- Small decorative trajectory drawing (SVG, not an image file) -->
         <svg class="hero-art" viewBox="0 0 220 140" aria-hidden="true">
           <line x1="10" y1="120" x2="210" y2="120" class="art-ground"/>
           <path d="M20 120 Q 110 -20 200 120" class="art-path"/>
@@ -81,7 +82,6 @@
       </div>
 
       <div class="grid-2">
-        <!-- What is projectile motion? -->
         <div class="card">
           <h2>🌍 What is projectile motion?</h2>
           <p>
@@ -92,7 +92,6 @@
           </p>
         </div>
 
-        <!-- Learning objectives -->
         <div class="card">
           <h2>🎯 By the end you will be able to</h2>
           <ol class="objectives">
@@ -103,7 +102,6 @@
         </div>
       </div>
 
-      <!-- 10-minute session plan -->
       <div class="card">
         <h2>⏱ Your 10-minute session</h2>
         <p class="muted">You can pause any time and continue later from the same place.</p>
@@ -111,7 +109,161 @@
           <!-- Filled in by script.js from CONFIG.sessionPlan -->
         </ul>
       </div>
+    </section>
 
+    <!-- ============================================================
+         SCREEN 2: PREDICTION
+         Learner must choose and submit a prediction before the lab.
+         ============================================================ -->
+    <section class="screen" id="screen-prediction">
+      <div class="card">
+        <span class="pill">Step 2 · Make a prediction</span>
+        <h1>What do you think will happen?</h1>
+        <p class="lead">
+          A ball is launched at <strong>20 m/s</strong>. The launch angle changes from
+          <strong>30°</strong> to <strong>45°</strong>. The speed stays the same.
+        </p>
+        <p><strong>What happens to the horizontal range?</strong></p>
+
+        <div class="options" id="prediction-options">
+          <label class="option">
+            <input type="radio" name="prediction" value="increase">
+            <span>📈 The range increases</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="prediction" value="decrease">
+            <span>📉 The range decreases</span>
+          </label>
+          <label class="option">
+            <input type="radio" name="prediction" value="same">
+            <span>➖ The range stays the same</span>
+          </label>
+        </div>
+
+        <p class="reassure">
+          💛 This is just a guess. Scientists make predictions and then test them.
+          You won't lose marks here.
+        </p>
+
+        <div class="feedback" id="prediction-feedback" hidden></div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" data-nav="back">← Back</button>
+        <button class="btn btn-primary" id="btn-submit-prediction">Submit prediction & open lab →</button>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SCREEN 3: EXPERIMENT LAB
+         The real simulator is built in Stage 3.
+         ============================================================ -->
+    <section class="screen" id="screen-lab">
+      <div class="card">
+        <span class="pill">Step 3 · Virtual lab</span>
+        <h1>Run your experiment</h1>
+        <p class="muted">Your prediction: <strong id="lab-prediction-echo">—</strong></p>
+
+        <!-- Placeholder: replaced by the canvas simulator in Stage 3 -->
+        <div class="placeholder" id="lab-area">
+          🛠 The projectile simulator will appear here in Stage 3.<br>
+          <button class="btn btn-secondary" id="btn-demo-launch">Record a test launch (temporary)</button>
+          <p class="muted" id="lab-count">Experiments run: 0</p>
+        </div>
+      </div>
+
+      <div class="feedback" id="lab-feedback" hidden></div>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" data-nav="back">← Back</button>
+        <button class="btn btn-primary" data-nav="next">Go to observations →</button>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SCREEN 4: OBSERVATION & COMPARISON
+         ============================================================ -->
+    <section class="screen" id="screen-observation">
+      <div class="card">
+        <span class="pill">Step 4 · Observe & compare</span>
+        <h1>What pattern do you see?</h1>
+        <p class="muted">Your experiment results will be compared in a table here (Stage 4).</p>
+
+        <label for="observation-text"><strong>Write what you noticed:</strong></label>
+        <textarea id="observation-text" rows="3"
+          placeholder="Example: When I changed the angle, the range..."></textarea>
+      </div>
+
+      <div class="feedback" id="observation-feedback" hidden></div>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" data-nav="back">← Back to lab</button>
+        <button class="btn btn-primary" data-nav="next">See the explanation →</button>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SCREEN 5: CONCEPT EXPLANATION
+         ============================================================ -->
+    <section class="screen" id="screen-concept">
+      <div class="card">
+        <span class="pill">Step 5 · Understand why</span>
+        <h1>The physics behind your results</h1>
+        <p class="muted">Full explanation with equations and diagrams is added in Stage 5.</p>
+        <ul class="concept-list">
+          <li>📐 How the <strong>launch angle</strong> affects range</li>
+          <li>🎯 Why <strong>45°</strong> gives the maximum range</li>
+          <li>🔁 Why <strong>30° and 60°</strong> give equal ranges</li>
+          <li>⚡ How <strong>initial speed</strong> affects range</li>
+        </ul>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" data-nav="back">← Back</button>
+        <button class="btn btn-primary" data-nav="next">Check my understanding →</button>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SCREEN 6: KNOWLEDGE CHECK
+         ============================================================ -->
+    <section class="screen" id="screen-quiz">
+      <div class="card">
+        <span class="pill">Step 6 · Knowledge check</span>
+        <h1>Quick check</h1>
+        <p class="muted">Five or more questions (multiple-choice and numerical) are added in Stage 8.</p>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" data-nav="back">← Back</button>
+        <button class="btn btn-primary" data-nav="next">See my results →</button>
+      </div>
+    </section>
+
+    <!-- ============================================================
+         SCREEN 7: RESULTS & REFLECTION
+         ============================================================ -->
+    <section class="screen" id="screen-results">
+      <div class="card">
+        <span class="pill">Step 7 · Results & reflection</span>
+        <h1>🎉 Well done!</h1>
+        <p class="lead">You completed the LaunchLab journey.</p>
+
+        <div class="stats">
+          <div class="stat"><span class="stat-num" id="res-prediction">—</span>Initial prediction</div>
+          <div class="stat"><span class="stat-num" id="res-experiments">0</span>Experiments run</div>
+        </div>
+
+        <label for="reflection-text">
+          <strong>What is one thing you understand now that you did not understand before?</strong>
+        </label>
+        <textarea id="reflection-text" rows="3" placeholder="Write one sentence..."></textarea>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn btn-ghost" data-nav="back">← Back</button>
+        <button class="btn btn-secondary" id="btn-restart">↺ Start again</button>
+      </div>
     </section>
 
   </main>

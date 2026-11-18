@@ -226,6 +226,119 @@ h2 { font-size: 1.15rem; margin: 0 0 10px; }
 }
 .token-inline { font-weight: 700; color: var(--text); }
 
+/* ---------- 6b. Navigation & shared screen elements (Stage 2) ---------- */
+.step-dots {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+  margin: 8px 0 0;
+  gap: 4px;
+}
+.step-dots li {
+  flex: 1;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.step-dots li::before {
+  content: "";
+  display: block;
+  width: 10px;
+  height: 10px;
+  margin: 0 auto 2px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.step-dots li.done::before { background: var(--success); }
+.step-dots li.current { color: var(--primary-dark); font-weight: 700; }
+.step-dots li.current::before { background: var(--primary); box-shadow: 0 0 0 3px var(--primary-soft); }
+
+.nav-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+.btn-ghost:hover { background: var(--surface); color: var(--text); }
+.btn-secondary { background: var(--primary-soft); color: var(--primary-dark); }
+.btn-secondary:hover { background: #d6e4fd; }
+
+.options { display: grid; gap: 10px; margin: 12px 0 16px; }
+.option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.option:hover { border-color: var(--primary); }
+.option:has(input:checked) { border-color: var(--primary); background: var(--primary-soft); }
+.option input { width: 18px; height: 18px; accent-color: var(--primary); }
+
+/* Supportive message box (used when an activity is not yet done) */
+.feedback {
+  background: var(--warm);
+  border-left: 4px solid var(--accent);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+}
+.feedback.ok { background: #ecfdf3; border-left-color: var(--success); }
+
+.placeholder {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius);
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--muted);
+}
+.placeholder .btn { margin-top: 12px; }
+
+textarea {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font: inherit;
+  resize: vertical;
+}
+textarea:focus { outline: 2px solid var(--primary); border-color: transparent; }
+
+.concept-list { padding-left: 4px; list-style: none; }
+.concept-list li { margin-bottom: 8px; }
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.stat {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.stat-num {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
 /* ---------- 7. Responsive (mobile) ---------- */
 @media (max-width: 700px) {
   .topbar { padding: 8px 14px; }
@@ -238,4 +351,7 @@ h2 { font-size: 1.15rem; margin: 0 0 10px; }
   h1 { font-size: 1.6rem; }
   .card { padding: 16px; }
   .btn-lg { width: 100%; }
+  .step-dots li { font-size: 0; }          /* hide labels, keep dots */
+  .nav-row { flex-direction: column-reverse; }
+  .nav-row .btn { width: 100%; }
 }
