@@ -329,7 +329,7 @@ function clean(n) { return Math.abs(n) < 1e-9 ? 0 : n; }
    ============================================================== */
 const WORLD = { width: 95, height: 48 };
 const TIME_SPEED = 1.5;   // animation runs 1.5× faster than real time
-const COLORS = ["#2563eb", "#f59e0b", "#16a34a", "#db2777", "#7c3aed", "#0891b2", "#dc2626"];
+const COLORS = ["#ff5900", "#15191e", "#0e7490", "#7c3aed", "#b45309", "#be185d", "#6f737b"];
 
 const Sim = {
   canvas: null, ctx: null,
@@ -475,8 +475,8 @@ const Sim = {
   drawBall: function (exp, t) {
     const p = Physics.position(exp.speed, exp.angle, t);
     const c = this.ctx;
-    c.fillStyle = "#f59e0b";
-    c.strokeStyle = "#b45309";
+    c.fillStyle = "#ff5900";
+    c.strokeStyle = "#c24400";
     c.lineWidth = 1.5;
     c.beginPath();
     c.arc(this.px(p.x), this.py(Math.max(0, p.y)), 7, 0, Math.PI * 2);
@@ -1045,8 +1045,8 @@ function renderConcept() {
   }).join("") ;
   if (!$("chart-key")) {
     $("range-chart").insertAdjacentHTML("afterend",
-      '<p class="chart-key" id="chart-key"><span style="background:var(--primary)"></span>maximum (45°)' +
-      '<span style="background:var(--accent)"></span>complementary pair (30° and 60°)</p>');
+      '<p class="chart-key" id="chart-key"><span style="background:var(--ember)"></span>maximum (45°)' +
+      '<span style="background:var(--ink)"></span>complementary pair (30° and 60°)</p>');
   }
 }
 
