@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LaunchLab – Explore Projectile Motion</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================================
+       TOP BAR — visible on EVERY screen
+       Shows: logo, identity token, session timer, progress
+       ============================================================ -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-logo" aria-hidden="true">🚀</span>
+      <div>
+        <div class="brand-name">LaunchLab</div>
+        <div class="brand-sub">Explore Projectile Motion</div>
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <!-- Identity token (roll number) — filled in by script.js -->
+      <div class="token" title="Learner identity token">
+        <span class="token-label">ID</span>
+        <span id="identity-token">—</span>
+      </div>
+
+      <!-- 10-minute session timer (countdown logic added in Stage 6) -->
+      <div class="timer" title="Time left in this 10-minute session">
+        <span aria-hidden="true">⏱</span>
+        <span id="timer-display">10:00</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Progress bar — visible on EVERY screen -->
+  <div class="progress-wrap">
+    <div class="progress-info">
+      <span id="progress-label">Step 1 of 7 · Welcome</span>
+      <span id="progress-percent">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- ============================================================
+         SCREEN 1: WELCOME DASHBOARD
+         ============================================================ -->
+    <section class="screen active" id="screen-welcome">
+
+      <!-- Hero / welcome message -->
+      <div class="hero card">
+        <div class="hero-text">
+          <span class="pill">Class 11 · Physics · Virtual Lab</span>
+          <h1>Welcome to LaunchLab!</h1>
+          <p class="lead">
+            In this short lab you will <strong>launch virtual projectiles</strong> and find out
+            for yourself how the <strong>launch angle</strong> and <strong>speed</strong> decide how far
+            something travels.
+          </p>
+          <p class="reassure">
+            💛 There are no wrong experiments here. Every launch, even an unexpected one,
+            gives you useful evidence. Take it one step at a time.
+          </p>
+          <button class="btn btn-primary btn-lg" id="btn-start">
+            Start Experiment →
+          </button>
+        </div>
+        <!-- Small decorative trajectory drawing (SVG, not an image file) -->
+        <svg class="hero-art" viewBox="0 0 220 140" aria-hidden="true">
+          <line x1="10" y1="120" x2="210" y2="120" class="art-ground"/>
+          <path d="M20 120 Q 110 -20 200 120" class="art-path"/>
+          <circle cx="110" cy="50" r="7" class="art-ball"/>
+        </svg>
+      </div>
+
+      <div class="grid-2">
+        <!-- What is projectile motion? -->
+        <div class="card">
+          <h2>🌍 What is projectile motion?</h2>
+          <p>
+            When you throw a ball, kick a football or fire a water jet, the object follows a
+            curved path. It moves <strong>sideways</strong> at a steady speed while
+            <strong>gravity</strong> pulls it down. The distance it covers along the ground is called
+            the <strong>horizontal range</strong>.
+          </p>
+        </div>
+
+        <!-- Learning objectives -->
+        <div class="card">
+          <h2>🎯 By the end you will be able to</h2>
+          <ol class="objectives">
+            <li>Predict and test how <strong>launch angle</strong> changes the horizontal range.</li>
+            <li>Explain how <strong>initial speed</strong> changes the range.</li>
+            <li>Identify the angle that gives the <strong>maximum range</strong>.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 10-minute session plan -->
+      <div class="card">
+        <h2>⏱ Your 10-minute session</h2>
+        <p class="muted">You can pause any time and continue later from the same place.</p>
+        <ul class="session-plan" id="session-plan">
+          <!-- Filled in by script.js from CONFIG.sessionPlan -->
+        </ul>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    LaunchLab · ET617 Practical · Learner ID: <span class="token-inline" id="identity-token-footer">—</span>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
