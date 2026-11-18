@@ -10,7 +10,7 @@
 
   <!-- ============================================================
        TOP BAR — visible on EVERY screen
-       Shows: logo, identity token, session timer
+       Logo, identity token, 10-minute timer, pause button
        ============================================================ -->
   <header class="topbar">
     <div class="brand">
@@ -22,17 +22,17 @@
     </div>
 
     <div class="topbar-right">
-      <!-- Identity token (roll number) — filled in by script.js -->
       <div class="token" title="Learner identity token">
         <span class="token-label">ID</span>
-        <span id="identity-token">—</span>
+        <span class="js-token">—</span>
       </div>
 
-      <!-- 10-minute session timer (countdown logic added in Stage 6) -->
-      <div class="timer" title="Time left in this 10-minute session">
+      <div class="timer" id="timer" title="Time left in this 10-minute session">
         <span aria-hidden="true">⏱</span>
         <span id="timer-display">10:00</span>
       </div>
+
+      <button class="btn-pause-top" id="btn-session-pause" title="Pause the session" disabled>⏸</button>
     </div>
   </header>
 
@@ -45,9 +45,7 @@
     <div class="progress-track">
       <div class="progress-fill" id="progress-fill"></div>
     </div>
-    <ol class="step-dots" id="step-dots">
-      <!-- Filled in by script.js -->
-    </ol>
+    <ol class="step-dots" id="step-dots"></ol>
   </div>
 
   <main class="container">
@@ -56,7 +54,6 @@
          SCREEN 1: WELCOME DASHBOARD
          ============================================================ -->
     <section class="screen active" id="screen-welcome">
-
       <div class="hero card">
         <div class="hero-text">
           <span class="pill">Class 11 · Physics · Virtual Lab</span>
@@ -70,9 +67,7 @@
             💛 There are no wrong experiments here. Every launch, even an unexpected one,
             gives you useful evidence. Take it one step at a time.
           </p>
-          <button class="btn btn-primary btn-lg" id="btn-start">
-            Start Experiment →
-          </button>
+          <button class="btn btn-primary btn-lg" id="btn-start">Start Experiment →</button>
         </div>
         <svg class="hero-art" viewBox="0 0 220 140" aria-hidden="true">
           <line x1="10" y1="120" x2="210" y2="120" class="art-ground"/>
@@ -91,88 +86,133 @@
             the <strong>horizontal range</strong>.
           </p>
         </div>
-
         <div class="card">
           <h2>🎯 By the end you will be able to</h2>
           <ol class="objectives">
-            <li>Predict and test how <strong>launch angle</strong> changes the horizontal range.</li>
-            <li>Explain how <strong>initial speed</strong> changes the range.</li>
-            <li>Identify the angle that gives the <strong>maximum range</strong>.</li>
+            <li><strong>Predict</strong> how changing launch angle or speed affects the horizontal range.</li>
+            <li><strong>Compare</strong> the ranges of at least three angles at the same speed.</li>
+            <li><strong>Explain</strong> why 45° gives the maximum range and why 30° and 60° give equal ranges.</li>
           </ol>
         </div>
       </div>
 
       <div class="card">
         <h2>⏱ Your 10-minute session</h2>
-        <p class="muted">You can pause any time and continue later from the same place.</p>
-        <ul class="session-plan" id="session-plan">
-          <!-- Filled in by script.js from CONFIG.sessionPlan -->
-        </ul>
+        <p class="muted">The timer starts when you press Start. You can pause any time with ⏸ and continue later from the same place. Your work is saved automatically.</p>
+        <ul class="session-plan" id="session-plan"></ul>
       </div>
     </section>
 
     <!-- ============================================================
-         SCREEN 2: PREDICTION
-         Learner must choose and submit a prediction before the lab.
+         SCREEN 2: PREDICTION (two predictions, saved for later)
          ============================================================ -->
     <section class="screen" id="screen-prediction">
       <div class="card">
         <span class="pill">Step 2 · Make a prediction</span>
         <h1>What do you think will happen?</h1>
-        <p class="lead">
-          A ball is launched at <strong>20 m/s</strong>. The launch angle changes from
-          <strong>30°</strong> to <strong>45°</strong>. The speed stays the same.
-        </p>
-        <p><strong>What happens to the horizontal range?</strong></p>
+        <p class="lead">A ball is launched at <strong>20 m/s</strong>. Only the angle changes. The speed stays the same.</p>
 
-        <div class="options" id="prediction-options">
-          <label class="option">
-            <input type="radio" name="prediction" value="increase">
-            <span>📈 The range increases</span>
-          </label>
-          <label class="option">
-            <input type="radio" name="prediction" value="decrease">
-            <span>📉 The range decreases</span>
-          </label>
-          <label class="option">
-            <input type="radio" name="prediction" value="same">
-            <span>➖ The range stays the same</span>
-          </label>
+        <p class="question">Prediction 1: The angle changes from <strong>30°</strong> to <strong>45°</strong>. What happens to the horizontal range?</p>
+        <div class="options">
+          <label class="option"><input type="radio" name="prediction" value="increase"><span>📈 The range increases</span></label>
+          <label class="option"><input type="radio" name="prediction" value="decrease"><span>📉 The range decreases</span></label>
+          <label class="option"><input type="radio" name="prediction" value="same"><span>➖ The range stays the same</span></label>
         </div>
 
-        <p class="reassure">
-          💛 This is just a guess. Scientists make predictions and then test them.
-          You won't lose marks here.
-        </p>
+        <p class="question">Prediction 2: The angle changes from <strong>45°</strong> to <strong>70°</strong>. What happens to the horizontal range?</p>
+        <div class="options">
+          <label class="option"><input type="radio" name="prediction2" value="increase"><span>📈 The range increases</span></label>
+          <label class="option"><input type="radio" name="prediction2" value="decrease"><span>📉 The range decreases</span></label>
+          <label class="option"><input type="radio" name="prediction2" value="same"><span>➖ The range stays the same</span></label>
+        </div>
 
+        <p class="reassure">💛 These are just guesses. Scientists make predictions and then test them. You won't lose marks here.</p>
         <div class="feedback" id="prediction-feedback" hidden></div>
       </div>
 
       <div class="nav-row">
         <button class="btn btn-ghost" data-nav="back">← Back</button>
-        <button class="btn btn-primary" id="btn-submit-prediction">Submit prediction & open lab →</button>
+        <button class="btn btn-primary" id="btn-submit-prediction">Submit predictions & open lab →</button>
       </div>
     </section>
 
     <!-- ============================================================
          SCREEN 3: EXPERIMENT LAB
-         The real simulator is built in Stage 3.
          ============================================================ -->
     <section class="screen" id="screen-lab">
       <div class="card">
         <span class="pill">Step 3 · Virtual lab</span>
         <h1>Run your experiment</h1>
-        <p class="muted">Your prediction: <strong id="lab-prediction-echo">—</strong></p>
+        <p class="muted">
+          Your predictions: 30°→45°: <strong id="lab-prediction-echo">—</strong> ·
+          45°→70°: <strong id="lab-prediction2-echo">—</strong>
+        </p>
 
-        <!-- Placeholder: replaced by the canvas simulator in Stage 3 -->
-        <div class="placeholder" id="lab-area">
-          🛠 The projectile simulator will appear here in Stage 3.<br>
-          <button class="btn btn-secondary" id="btn-demo-launch">Record a test launch (temporary)</button>
-          <p class="muted" id="lab-count">Experiments run: 0</p>
+        <div class="lab-layout">
+          <div class="sim-panel">
+            <canvas id="sim-canvas" aria-label="Projectile motion simulation"></canvas>
+            <p class="assumptions">Ideal model: no air resistance · g = 9.8 m/s² · launch and landing at the same height</p>
+          </div>
+
+          <div class="controls">
+            <div class="control">
+              <label for="angle-slider">Launch angle (θ)</label>
+              <div class="control-row">
+                <input type="range" id="angle-slider" min="0" max="90" step="1" value="45">
+                <input type="number" id="angle-input" min="0" max="90" step="1" value="45">
+                <span class="unit">°</span>
+              </div>
+            </div>
+            <div class="control">
+              <label for="speed-slider">Initial velocity (u)</label>
+              <div class="control-row">
+                <input type="range" id="speed-slider" min="5" max="30" step="1" value="20">
+                <input type="number" id="speed-input" min="5" max="30" step="1" value="20">
+                <span class="unit">m/s</span>
+              </div>
+            </div>
+
+            <div class="sim-buttons">
+              <button class="btn btn-primary" id="btn-launch">🚀 Launch</button>
+              <button class="btn btn-secondary" id="btn-pause" disabled>⏸ Pause</button>
+              <button class="btn btn-ghost" id="btn-reset">↺ Reset</button>
+              <button class="btn btn-ghost" id="btn-compare">📊 Compare: off</button>
+            </div>
+
+            <div class="readout">
+              <div><span>Range (R)</span><strong id="out-range">—</strong></div>
+              <div><span>Max height (H)</span><strong id="out-height">—</strong></div>
+              <div><span>Time of flight (T)</span><strong id="out-time">—</strong></div>
+            </div>
+          </div>
         </div>
+
+        <h2 class="exp-title">Your experiments (<span id="lab-count">0</span>)</h2>
+        <ul class="exp-list" id="exp-list"></ul>
       </div>
 
       <div class="feedback" id="lab-feedback" hidden></div>
+
+      <!-- AI-assisted hint (Stage 7) -->
+      <div class="card hint-card">
+        <div class="hint-head">
+          <h2>💡 Stuck? Get a hint</h2>
+          <button class="btn btn-secondary" id="btn-hint">Get a Hint</button>
+        </div>
+        <div id="hint-output" class="hint-output" hidden></div>
+        <p class="hint-label" id="hint-label"></p>
+        <details class="hint-prompt" id="hint-prompt-box" hidden>
+          <summary>See the tutor prompt built from your experiment data</summary>
+          <pre id="hint-prompt"></pre>
+        </details>
+      </div>
+
+      <!-- Inquiry activities 1–3 (Stage 4/5) -->
+      <div class="card">
+        <h2>🔬 Your investigation</h2>
+        <p class="muted">Complete each activity in order. Tap a grey launch chip to set the controls for you, then press <strong>Launch</strong>.</p>
+        <div id="activities"></div>
+      </div>
 
       <div class="nav-row">
         <button class="btn btn-ghost" data-nav="back">← Back</button>
@@ -187,11 +227,28 @@
       <div class="card">
         <span class="pill">Step 4 · Observe & compare</span>
         <h1>What pattern do you see?</h1>
-        <p class="muted">Your experiment results will be compared in a table here (Stage 4).</p>
+        <p class="muted">All your experiments side by side. The longest range is highlighted.</p>
+        <div class="table-wrap">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Experiment</th><th>Launch angle</th><th>Initial velocity</th>
+                <th>Horizontal range</th><th>Max height</th><th>Time of flight</th>
+              </tr>
+            </thead>
+            <tbody id="compare-body"></tbody>
+          </table>
+        </div>
+      </div>
 
-        <label for="observation-text"><strong>Write what you noticed:</strong></label>
-        <textarea id="observation-text" rows="3"
-          placeholder="Example: When I changed the angle, the range..."></textarea>
+      <div class="card">
+        <label for="observation-text"><strong>What pattern do you observe?</strong></label>
+        <textarea id="observation-text" rows="2" placeholder="Example: When I changed the angle, the range..."></textarea>
+
+        <p class="obs-prediction">Your first predictions were: <strong id="obs-prediction-echo">—</strong></p>
+        <label for="diff-text"><strong>Activity 4 · What did you observe that was different from your initial prediction?</strong></label>
+        <textarea id="diff-text" rows="2" placeholder="Example: I thought… but my experiments showed…"></textarea>
+        <button class="btn btn-secondary btn-save" id="btn-save-notes">Save my notes</button>
       </div>
 
       <div class="feedback" id="observation-feedback" hidden></div>
@@ -209,13 +266,40 @@
       <div class="card">
         <span class="pill">Step 5 · Understand why</span>
         <h1>The physics behind your results</h1>
-        <p class="muted">Full explanation with equations and diagrams is added in Stage 5.</p>
-        <ul class="concept-list">
-          <li>📐 How the <strong>launch angle</strong> affects range</li>
-          <li>🎯 Why <strong>45°</strong> gives the maximum range</li>
-          <li>🔁 Why <strong>30° and 60°</strong> give equal ranges</li>
-          <li>⚡ How <strong>initial speed</strong> affects range</li>
-        </ul>
+        <p class="muted">You already found these patterns yourself. Here is why they happen.</p>
+      </div>
+
+      <div class="concept-grid">
+        <div class="card concept">
+          <h2>1 · Angle shares the speed</h2>
+          <p>The launch speed splits into a <strong>sideways part</strong> (u cos θ) and an <strong>upward part</strong> (u sin θ). A bigger angle gives more time in the air but less sideways speed.</p>
+          <div class="formula">R = u² sin(2θ) / g</div>
+        </div>
+
+        <div class="card concept">
+          <h2>2 · Why 45° is the best</h2>
+          <p>sin(2θ) can never be bigger than 1. It equals 1 when 2θ = 90°, so <strong>θ = 45°</strong>. That is the perfect balance between time in the air and sideways speed.</p>
+          <p class="your-data" id="concept-data-45"></p>
+        </div>
+
+        <div class="card concept">
+          <h2>3 · Why 30° and 60° match</h2>
+          <p>30° + 60° = 90°, so they are <strong>complementary</strong> angles. sin(60°) = sin(120°), so both give the same range. 60° just flies higher and longer.</p>
+          <p class="your-data" id="concept-data-comp"></p>
+        </div>
+
+        <div class="card concept">
+          <h2>4 · Speed has a squared effect</h2>
+          <p>Range depends on <strong>u²</strong>. Double the speed → 2² = <strong>4 times</strong> the range. Angle can only ever help up to 45°, but speed keeps increasing range.</p>
+          <p class="your-data" id="concept-data-speed"></p>
+        </div>
+
+        <div class="card concept wide">
+          <h2>5 · Range is not the same as height</h2>
+          <p><strong>Maximum height</strong> H = u² sin²θ / (2g) keeps growing up to 90°. <strong>Range</strong> is largest at 45°. A higher path is <em>not</em> always a longer one.</p>
+          <p class="muted">Range at 20 m/s for different angles (calculated with the formula):</p>
+          <div class="bar-chart" id="range-chart"></div>
+        </div>
       </div>
 
       <div class="nav-row">
@@ -225,14 +309,16 @@
     </section>
 
     <!-- ============================================================
-         SCREEN 6: KNOWLEDGE CHECK
+         SCREEN 6: KNOWLEDGE CHECK (built by renderQuiz)
          ============================================================ -->
     <section class="screen" id="screen-quiz">
       <div class="card">
         <span class="pill">Step 6 · Knowledge check</span>
         <h1>Quick check</h1>
-        <p class="muted">Five or more questions (multiple-choice and numerical) are added in Stage 8.</p>
+        <p class="muted">6 short questions: multiple choice and number answers. You can try again, and after two tries you can see the model answer.</p>
       </div>
+      <div id="quiz"></div>
+      <div class="feedback" id="quiz-feedback" hidden></div>
 
       <div class="nav-row">
         <button class="btn btn-ghost" data-nav="back">← Back</button>
@@ -247,30 +333,82 @@
       <div class="card">
         <span class="pill">Step 7 · Results & reflection</span>
         <h1>🎉 Well done!</h1>
-        <p class="lead">You completed the LaunchLab journey.</p>
+        <p class="lead" id="res-message">You completed the LaunchLab journey.</p>
 
         <div class="stats">
-          <div class="stat"><span class="stat-num" id="res-prediction">—</span>Initial prediction</div>
-          <div class="stat"><span class="stat-num" id="res-experiments">0</span>Experiments run</div>
+          <div class="stat"><span class="stat-num" id="res-activities">0 / 4</span>Activities completed</div>
+          <div class="stat"><span class="stat-num" id="res-score">0 / 6</span>Quiz: right first time</div>
+          <div class="stat"><span class="stat-num" id="res-act-score">0 / 4</span>Lab questions right first time</div>
+          <div class="stat"><span class="stat-num" id="res-experiments">0</span>Experiments performed</div>
+          <div class="stat"><span class="stat-num" id="res-time">0:00</span>Time taken</div>
+          <div class="stat"><span class="stat-num" id="res-progress">0%</span>Learning progress</div>
         </div>
+      </div>
 
-        <label for="reflection-text">
-          <strong>What is one thing you understand now that you did not understand before?</strong>
-        </label>
+      <div class="grid-2">
+        <div class="card">
+          <h2>🔮 Your predictions</h2>
+          <table class="mini-table" id="res-predictions"></table>
+        </div>
+        <div class="card">
+          <h2>🧭 Ideas you worked on</h2>
+          <ul class="mis-list" id="res-misconceptions"></ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>📝 Review your work</h2>
+        <div id="res-review"></div>
+      </div>
+
+      <div class="card">
+        <label for="reflection-text"><strong>What is one thing you understand now that you did not understand before?</strong></label>
         <textarea id="reflection-text" rows="3" placeholder="Write one sentence..."></textarea>
+        <button class="btn btn-primary btn-save" id="btn-submit-reflection">Submit reflection</button>
+        <div class="feedback ok" id="reflection-feedback" hidden></div>
       </div>
 
       <div class="nav-row">
         <button class="btn btn-ghost" data-nav="back">← Back</button>
-        <button class="btn btn-secondary" id="btn-restart">↺ Start again</button>
+        <button class="btn btn-secondary" id="btn-restart">↺ Start a new session</button>
       </div>
     </section>
 
   </main>
 
   <footer class="footer">
-    LaunchLab · ET617 Practical · Learner ID: <span class="token-inline" id="identity-token-footer">—</span>
+    LaunchLab · ET617 Practical · Learner ID: <span class="token-inline js-token">—</span>
+    · Progress saved on this device ·
+    <button class="link-btn" id="btn-reset-session">Reset session</button>
   </footer>
+
+  <!-- ============================================================
+       PAUSE OVERLAY (Stage 6) — also shown when returning later
+       ============================================================ -->
+  <div class="overlay" id="pause-overlay" hidden>
+    <div class="modal">
+      <div class="modal-icon">⏸</div>
+      <h2 id="pause-title">Session paused</h2>
+      <p id="pause-text">Take a breath. Your progress and time are saved.</p>
+      <p class="modal-time">Time left: <strong id="pause-time">10:00</strong></p>
+      <p class="muted small">Learner ID: <span class="js-token">—</span></p>
+      <button class="btn btn-primary btn-lg" id="btn-resume">▶ Resume</button>
+    </div>
+  </div>
+
+  <!-- TIME-UP MESSAGE (Stage 6) -->
+  <div class="overlay" id="timeup-overlay" hidden>
+    <div class="modal">
+      <div class="modal-icon">⏰</div>
+      <h2>Your 10-minute session is complete</h2>
+      <p>Great effort! Everything you did is saved. You can finish the remaining steps or go straight to your results to review your work.</p>
+      <p class="muted small">Learner ID: <span class="js-token">—</span></p>
+      <div class="modal-buttons">
+        <button class="btn btn-ghost" id="btn-timeup-continue">Keep going</button>
+        <button class="btn btn-primary" id="btn-timeup-results">See my results</button>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
